@@ -1,0 +1,169 @@
+{%extends 'base.html'%} {%block head%} {%endblock%} {%block body%}
+<div class="container">
+  <br />
+  <div class="d-flex">
+
+    <!-- To do -->
+    <div class="p-2 flex-fill">
+      <div class="card">
+        <div class="card-header">
+          <h1>To Do</h1>
+        </div>
+
+        <div class="card-body">
+          <table class="table">
+            <tr>
+              <th>Task</th>
+              <th>Added Date</th>
+              <th>Actions</th>
+            </tr>
+
+            {%for task in tasks%}
+            <tr>
+              <td>{{task.content}}</td>
+              <td>{{task.date_created.date()}}</td>
+              <td>
+                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
+                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
+                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+
+            {%endfor%}
+          </table>
+
+          <form action="/" method="POST">
+            <div class="row">
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="content"
+                  id="content"
+                  placeholder="write your task here"
+                  required
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="submit"
+                  value="Add Task"
+                  class="btn btn-secondary"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- currently Doing task -->
+
+    <div class="p-2 flex-fill">
+      <div class="card">
+        <div class="card-header">
+          <h1>To Do</h1>
+        </div>
+
+        <div class="card-body">
+          <table class="table">
+            <tr>
+              <th>Task</th>
+              <th>Added Date</th>
+              <th>Actions</th>
+            </tr>
+
+            {%for task in tasks%}
+            <tr>
+              <td>{{task.content}}</td>
+              <td>{{task.date_created.date()}}</td>
+              <td>
+                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
+                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
+                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+
+            {%endfor%}
+          </table>
+
+          <form action="/" method="POST">
+            <div class="row">
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="content"
+                  id="content"
+                  placeholder="write your task here"
+                  required
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="submit"
+                  value="Add Task"
+                  class="btn btn-secondary"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-2 flex-fill">
+      <div class="card">
+        <div class="card-header">
+          <h1>To Do</h1>
+        </div>
+
+        <div class="card-body">
+          <table class="table">
+            <tr>
+              <th>Task</th>
+              <th>Added Date</th>
+              <th>Actions</th>
+            </tr>
+
+            {%for task in tasks%}
+            <tr>
+              <td>{{task.content}}</td>
+              <td>{{task.date_created.date()}}</td>
+              <td>
+                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
+                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
+                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
+              </td>
+            </tr>
+
+            {%endfor%}
+          </table>
+
+          <form action="/" method="POST">
+            <div class="row">
+              <div class="col">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="content"
+                  id="content"
+                  placeholder="write your task here"
+                  required
+                />
+              </div>
+              <div class="col">
+                <input
+                  type="submit"
+                  value="Add Task"
+                  class="btn btn-secondary"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}
