@@ -2,7 +2,6 @@
 <div class="container">
   <br />
   <div class="d-flex">
-
     <!-- To do -->
     <div class="p-2 flex-fill">
       <div class="card">
@@ -18,17 +17,32 @@
               <th>Actions</th>
             </tr>
 
-            {%for task in tasks%}
+            {%for task in allTasks%}
+              {% if task.status==0%}
             <tr>
               <td>{{task.content}}</td>
               <td>{{task.date_created.date()}}</td>
               <td>
-                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
-                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
-                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
+                <div
+                  class="btn-group"
+                  role="group"
+                  aria-label=""
+                >
+                  <a href="/readyTask/{{task.id}}" class="btn btn-success btn-sm"
+                    >Doing</a
+                  >
+                  &nbsp;
+                  <a href="/update/{{task.id}}" class="btn btn-primary btn-sm"
+                    >Edit</a
+                  >
+                  &nbsp;
+                  <a href="/delete/{{task.id}}" class="btn btn-danger btn-sm"
+                    >Delete</a
+                  >
+                </div>
               </td>
             </tr>
-
+              {%endif%}
             {%endfor%}
           </table>
 
@@ -40,16 +54,13 @@
                   class="form-control"
                   name="content"
                   id="content"
+                  value=""
                   placeholder="write your task here"
                   required
                 />
               </div>
               <div class="col">
-                <input
-                  type="submit"
-                  value="Add Task"
-                  class="btn btn-secondary"
-                />
+                <button class="btn btn-primary" name="click" value="todo_btn">Add Task</button>
               </div>
             </div>
           </form>
@@ -62,7 +73,7 @@
     <div class="p-2 flex-fill">
       <div class="card">
         <div class="card-header">
-          <h1>To Do</h1>
+          <h1>Doing</h1>
         </div>
 
         <div class="card-body">
@@ -73,17 +84,25 @@
               <th>Actions</th>
             </tr>
 
-            {%for task in tasks%}
-            <tr>
-              <td>{{task.content}}</td>
-              <td>{{task.date_created.date()}}</td>
-              <td>
-                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
-                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
-                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
-              </td>
-            </tr>
-
+            {%for task in allTasks%} 
+           
+            {%if task.status==1%}
+              <tr>
+                <td>{{task.content}}</td>
+                <td>{{task.date_created.date()}}</td>
+                <td>
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label=""
+                  >
+                  <a href="/readyTask/{{task.id}}" class="btn btn-success btn-sm">Done</a> &nbsp;
+                  <a href="/update/{{task.id}}" class="btn btn-primary btn-sm">Edit</a> &nbsp;
+                  <a href="/delete/{{task.id}}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+                </div>
+              </tr>
+            {%endif%}
             {%endfor%}
           </table>
 
@@ -95,16 +114,14 @@
                   class="form-control"
                   name="content"
                   id="content"
-                  placeholder="write your task here"
+                  value=""
+                  placeholder="write your urgent task here"
                   required
                 />
               </div>
+
               <div class="col">
-                <input
-                  type="submit"
-                  value="Add Task"
-                  class="btn btn-secondary"
-                />
+                <button class="btn btn-primary" name="click" value="doing_btn">Add Task</button>
               </div>
             </div>
           </form>
@@ -112,10 +129,11 @@
       </div>
     </div>
 
+    <!-- Done-->
     <div class="p-2 flex-fill">
       <div class="card">
         <div class="card-header">
-          <h1>To Do</h1>
+          <h1>Done</h1>
         </div>
 
         <div class="card-body">
@@ -126,17 +144,23 @@
               <th>Actions</th>
             </tr>
 
-            {%for task in tasks%}
+            {%for task in allTasks%}
+            {% if task.status==2%}
             <tr>
               <td>{{task.content}}</td>
               <td>{{task.date_created.date()}}</td>
               <td>
-                <a href="/complete/{{task.id}}" class="btn btn-success">Done</a>
-                <a href="/update/{{task.id}}" class="btn btn-primary">Edit</a>
-                <a href="/delete/{{task.id}}" class="btn btn-danger">Delete</a>
+                <div class="btn-group"
+                  role="group"
+                  aria-label=""
+                >
+ 
+                <a href="/" class="btn btn-success btn-sm">completed</a> &nbsp;
+                <a href="/delete/{{task.id}}" class="btn btn-danger btn-sm">Delete</a>
+                </div>
               </td>
             </tr>
-
+            {%endif%}
             {%endfor%}
           </table>
 
@@ -148,16 +172,14 @@
                   class="form-control"
                   name="content"
                   id="content"
-                  placeholder="write your task here"
+                  value=""
+                  placeholder="write your completed task"
                   required
                 />
               </div>
               <div class="col">
-                <input
-                  type="submit"
-                  value="Add Task"
-                  class="btn btn-secondary"
-                />
+
+                <button class="btn btn-primary" name="click" value="done_btn">Add Task</button>
               </div>
             </div>
           </form>
