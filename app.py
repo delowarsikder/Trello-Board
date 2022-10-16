@@ -1,16 +1,20 @@
-from cmath import inf
-from crypt import methods
-from distutils.log import debug
-from tkinter.tix import Tree
-from turtle import end_fill
 from flask import Flask, render_template, url_for, request, redirect,flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_mysqldb import MySQL
 
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///test.db'
-db=SQLAlchemy(app)
-app.secret_key = 'secretKey'
+# app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///test.db'
+# db=SQLAlchemy(app)
+# app.secret_key = 'secretKey'
+
+app.config['MYSQL_HOST']='localhost'
+app.config['MYSQL_USER']='root'
+app.config['MYSQL_PASSWORD']=''
+app.config['MYSQL_DB']='trello'
+db=MySQL(app)
+
+
 
 class Todo(db.Model):
   id=db.Column(db.Integer,primary_key=True)
