@@ -1,40 +1,46 @@
-from cmath import inf
-from crypt import methods
-from distutils.log import debug
-from tkinter.tix import Tree
-from turtle import end_fill
-from flask import Flask, render_template, url_for, request, redirect,flash
+from os import stat
+from flask import Flask, render_template, url_for, request, redirect,flash,session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from sqlalchemy import null
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///test.db'
 db=SQLAlchemy(app)
 app.secret_key = 'secretKey'
 
+###Target task model
 class Todo(db.Model):
   id=db.Column(db.Integer,primary_key=True)
   content=db.Column(db.String(200),nullable=False)
   date_created=db.Column(db.DateTime,default=datetime.utcnow)
+  status=db.Column(db.Integer,nullable=False)
 
   def __repr__(self):
     return '<Task %r>' % self.id
 
 
-with app.app_context():
-    db.create_all()
-
-
 @app.route('/',methods=['POST','GET'])
 def index():
-  print("shouted from index")
+
+  if request.method == 'GET':
+    allTasks=Todo.query.order_by(Todo.date_created).all()
+    return render_template('index.html',allTasks=allTasks)
+
   if request.method=='POST':
+    status=0
+    ##check status
+    if request.form['click']=='todo_btn':
+      status=0
+    elif request.form['click']== 'doing_btn':
+      status=1
+    elif request.form['click']=='done_btn':
+      status=2
+
     task_content=request.form['content']
     if task_content !="":
-      new_task=Todo(content=task_content)
+      new_task=Todo(content=task_content,status=status)
     else:
-      flash("No task add")
-      # return "No task add"
       return redirect('/')
 
     try:
@@ -43,14 +49,11 @@ def index():
       return redirect('/')
     except:
       return 'There was an issue'
-  else:
-    tasks=Todo.query.order_by(Todo.date_created).all()
-    return render_template('index.html',tasks=tasks)
+
 
 
 @app.route('/delete/<int:id>')
 def delete(id):
-  # print("shouted from delete section")
   task_to_delete=Todo.query.get_or_404(id)
   try:
     db.session.delete(task_to_delete)
@@ -63,7 +66,6 @@ def delete(id):
 
 @app.route('/update/<int:id>',methods=['GET','POST'])
 def update(id):
-  print("shouted from Update section") 
   task_to_update=Todo.query.get_or_404(id)
 
   if request.method=="POST":
@@ -83,21 +85,29 @@ def update(id):
   else:
     return render_template('update.html',task=task_to_update)
 
-###complete task
+###change task state Todo->Doing->Done
+@app.route('/readyTask/<int:id>')
+def readyTask(id):
+  current_task=Todo.query.get_or_404(id)
+  print ("before doing Task: ",current_task.status)
+  if current_task.status==0:
+    current_task.status=1
+  elif current_task.status==1:
+    current_task.status=2
 
-@app.route('/complete/<int:id>')
-def complete(id):
-  task_to_done=Todo.query.get_or_404(id)
-  print("completed task :",task_to_done.content)
-  return "your task is completed"
+  try:
+    db.session.commit()
+    return redirect('/')
 
+  except:
+    return 'There is a problem'
 
-
-
-
-
+# Create the table
+db.init_app(app)
+with app.app_context():
+    db.create_all()
 
 ##start main here
 if __name__=='__main__':
-  app.run(host='localhost',port=5050,debug=True)
+  app.run(host='localhost',port=5000,debug=True)
 
