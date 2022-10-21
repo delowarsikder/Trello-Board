@@ -2,29 +2,35 @@ from flask import Flask, render_template, url_for, request, redirect,flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_mysqldb import MySQL
-
 app=Flask(__name__)
 
 app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_PASSWORD']=''
-app.config['MYSQL_DB']='trello'
-db=MySQL(app)
+app.config['MYSQL_USER']='delowar'
+app.config['MYSQL_PASSWORD']='delowar'
+app.config['MYSQL_DB']='trello_board'
+app.config['MYSQL_DATABASE_CHARSET']='utf-8'
+app.config['MYSQL_CURSORCLASS']='DictCursor'
 
-
-
-class Todo(db.Model):
-  id=db.Column(db.Integer,primary_key=True)
-  content=db.Column(db.String(200),nullable=False)
-  date_created=db.Column(db.DateTime,default=datetime.utcnow)
-
-  def __repr__(self):
-    return '<Task %r>' % self.id
-
-
+mysql = MySQL(app)
+# mysql.init_app(app)
 with app.app_context():
-    db.create_all()
+  conn = mysql.connection.cursor()
 
+@app.route('/')
+def index():
+  # cursor=db.connection.cursor()
+  # cursor.execute('''CREATE TABLE ToDo (id INTERFER,content varchar(200))''')
+  return "Done"
+
+# class Todo(db.Model):
+#   id=db.Column(db.Integer,primary_key=True)
+#   content=db.Column(db.String(200),nullable=False)
+#   date_created=db.Column(db.DateTime,default=datetime.utcnow)
+
+#   def __repr__(self):
+#     return '<Task %r>' % self.id
+
+''' 
 
 @app.route('/',methods=['POST','GET'])
 def index():
@@ -96,9 +102,8 @@ def complete(id):
 
 
 
+'''
 
-
-##start main here
+# ##start main here
 if __name__=='__main__':
-  app.run(host='localhost',port=5050,debug=True)
-
+  app.run(host='localhost',port='8000')
